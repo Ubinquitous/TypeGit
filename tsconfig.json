@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "baseUrl": "local"
+    },
+    "include": [
+        "local"
+    ]
+}
