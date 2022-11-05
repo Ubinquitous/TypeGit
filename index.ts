@@ -2,6 +2,7 @@
 
 const readline = require('readline');
 const fs = require('fs');
+const g_path = require("path");
 
 /* functions */
 
@@ -45,12 +46,12 @@ TypeGit.on("line", function <T>(line: T) {
     /* 폴더 핸들링 */
 
     if (isInit) {
-        if (cmd.includes('tgit mkdir ')) {
-            let path = `tgit/${cmd.replace('tgit mkdir ', '')}`
+        if (cmd.includes('mkdir ')) { // 폴더 생성
+            let path = `${__dirname}/tgit/${cmd.replace('mkdir ', '')}`;
 
             checkMakeDir(path, (error, isTrue) => {
                 if (error)
-                    return console.log(error);
+                    console.log(`\u001b[41mTypeGit Error System Error :: ${error} \u001b[0m`);
 
                 if (!isTrue) {
                     console.log('\u001b[41m' + 'TypeGit Error 1001 :: 동일한 폴더명이 존재합니다. \u001b[0m');
@@ -59,10 +60,34 @@ TypeGit.on("line", function <T>(line: T) {
                         if (error)
                             console.log(error);
 
-                        console.log('\u001b[32mTypeGit : 성공적으로 폴더를 생성했습니다.\u001b[0m')
-                        console.log(`\u001b[32m폴더 경로 : ${path}\u001b[0m`)
+                        console.log('\u001b[32mTypeGit : 성공적으로 폴더를 생성했습니다.\u001b[0m');
+                        console.log(`\u001b[32m폴더 경로 :  ${__dirname}/tgit/${cmd.replace('mkdir ', '')}\u001b[0m`);
                     });
                 };
+            });
+        } else if (cmd.includes('rmdir ')) { // 폴더 삭제
+            let path = `${__dirname}/tgit/${cmd.replace('rmdir ', '')}`;
+
+            fs.readdir(path, (error, data) => {
+                if (error)
+                    console.log(`\u001b[41mTypeGit Error 1002 :: 해당 폴더를 찾을 수 없습니다. \u001b[0m`);
+                else {
+                    fs.rmdir(path, (error) => {
+                        if (error)
+                            console.log(`\u001b[41mTypeGit Error System Error :: ${error} \u001b[0m`);
+                        console.log('\u001b[32mTypeGit : 성공적으로 폴더를 삭제했습니다.\u001b[0m');
+                    })
+                }
+            });
+        } else if (cmd.includes('fdir ')) { // 폴더 검색
+            let path = `${__dirname}/tgit/${cmd.replace('fdir ', '')}`;
+            fs.readdir(path, (error) => {
+                if (error)
+                    console.log(`\u001b[32m${cmd.replace('fdir ', '')} 폴더를 찾을 수 없습니다.\u001b[0m`);
+                else {
+                    console.log(`\u001b[32m${cmd.replace('fdir ', '')} 폴더는 존재합니다.\u001b[0m`);
+                    console.log(`\u001b[32m폴더 경로 : ${path}\u001b[0m`);
+                }
             });
         }
     }

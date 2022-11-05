@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "baseUrl": "local"
+        "baseUrl": "tgit"
     },
     "include": [
-        "local"
+        "tgit"
     ]
 }
