@@ -57,27 +57,32 @@ rl.on("line", function <T>(line: T) {
 
     if (isInit) {
         if (cmd.includes('mkdir ')) { // 폴더 생성
-            let path = `${__dirname}/${cmd.replace('mkdir ', '')}`;
+            if (cmd.includes('mkdir TGIT')) {
+                console.log(`\u001b[41mTypeGit Error 1011 :: TGIT 폴더는 접근할 수 없습니다.\u001b[0m\n`);
+                process.stdout.write(`${__dirname} (TGIT)\n> `);
+            } else {
+                let path = `${__dirname}/${cmd.replace('mkdir ', '')}`;
 
-            checkMakeDir(path, (error, isTrue) => {
-                if (error) {
-                    console.log(`\u001b[41mTypeGit Error System Error :: ${error} \u001b[0m\n`);
-                    process.stdout.write(`${__dirname} (TGIT)\n> `);
-                }
-                if (!isTrue) {
-                    console.log('\u001b[41m' + 'TypeGit Error 1001 :: 이미 동일한 폴더가 존재합니다. \u001b[0m\n');
-                    process.stdout.write(`${__dirname} (TGIT)\n> `);
-                } else {
-                    fs.mkdir(path, (error) => {
-                        if (error)
-                            console.log(error);
-
-                        console.log('\u001b[32mTypeGit : 성공적으로 폴더를 생성했습니다.\u001b[0m');
-                        console.log(`\u001b[32m폴더 경로 : ${__dirname}/${cmd.replace('mkdir ', '')}\u001b[0m\n`);
+                checkMakeDir(path, (error, isTrue) => {
+                    if (error) {
+                        console.log(`\u001b[41mTypeGit Error System Error :: ${error} \u001b[0m\n`);
                         process.stdout.write(`${__dirname} (TGIT)\n> `);
-                    });
-                };
-            });
+                    }
+                    if (!isTrue) {
+                        console.log('\u001b[41m' + 'TypeGit Error 1001 :: 이미 동일한 폴더가 존재합니다. \u001b[0m\n');
+                        process.stdout.write(`${__dirname} (TGIT)\n> `);
+                    } else {
+                        fs.mkdir(path, (error) => {
+                            if (error)
+                                console.log(error);
+
+                            console.log('\u001b[32mTypeGit : 성공적으로 폴더를 생성했습니다.\u001b[0m');
+                            console.log(`\u001b[32m폴더 경로 : ${__dirname}/${cmd.replace('mkdir ', '')}\u001b[0m\n`);
+                            process.stdout.write(`${__dirname} (TGIT)\n> `);
+                        });
+                    };
+                });
+            }
         } else if (cmd.includes('rmdir ')) { // 폴더 삭제
             let path = `${__dirname}/${cmd.replace('rmdir ', '')}`;
 
@@ -104,18 +109,23 @@ rl.on("line", function <T>(line: T) {
                 });
             }
         } else if (cmd.includes('fdir ')) { // 폴더 검색
-            let path = `${__dirname}/${cmd.replace('fdir ', '')}`;
-            fs.readdir(path, (error) => {
-                if (error) {
-                    console.log(`\u001b[32mTypeGit : ${cmd.replace('fdir ', '')} 폴더를 찾을 수 없습니다.\u001b[0m\n`);
-                    process.stdout.write(`${__dirname} (TGIT)\n> `);
-                }
-                else {
-                    console.log(`\u001b[32mTypeGit : ${cmd.replace('fdir ', '')} 폴더는 존재합니다.\u001b[0m`);
-                    console.log(`\u001b[32m폴더 경로 : ${path}\u001b[0m\n`);
-                    process.stdout.write(`${__dirname} (TGIT)\n> `);
-                }
-            });
+            if (cmd.includes('fdir TGIT')) {
+                console.log(`\u001b[41mTypeGit Error 1012 :: TGIT 폴더는 접근할 수 없습니다.\u001b[0m\n`);
+                process.stdout.write(`${__dirname} (TGIT)\n> `);
+            } else {
+                let path = `${__dirname}/${cmd.replace('fdir ', '')}`;
+                fs.readdir(path, (error) => {
+                    if (error) {
+                        console.log(`\u001b[32mTypeGit : ${cmd.replace('fdir ', '')} 폴더를 찾을 수 없습니다.\u001b[0m\n`);
+                        process.stdout.write(`${__dirname} (TGIT)\n> `);
+                    }
+                    else {
+                        console.log(`\u001b[32mTypeGit : ${cmd.replace('fdir ', '')} 폴더는 존재합니다.\u001b[0m`);
+                        console.log(`\u001b[32m폴더 경로 : ${path}\u001b[0m\n`);
+                        process.stdout.write(`${__dirname} (TGIT)\n> `);
+                    }
+                });
+            }
         } else if (cmd === 'ls') {
             fs.readdir('./', function (error, filelist) {
                 console.log(`\u001b[32mTypeGit : 현재 경로의 파일 목록은 다음과 같습니다 : \u001b[0m`);
@@ -123,27 +133,40 @@ rl.on("line", function <T>(line: T) {
                 process.stdout.write(`${__dirname} (TGIT)\n> `);
             })
         } else if (cmd.includes('touch ')) {
-            let path = `${__dirname}/${cmd.replace('touch ', '')}`;
-            fs.writeFile(path, '', function (error) {
-                if (fs.readdir('./', function (error, filelist) { filelist.includes(path.replace('touch ', '')) })) {
-                    console.log(`\u001b[41mTypeGit Error 1003 :: 이미 동일한 파일이 존재합니다.\u001b[0m\n`);
-                    process.stdout.write(`${__dirname} (TGIT)\n> `);
-                } else {
-                    console.log(`\u001b[32mTypeGit : 파일을 생성했습니다.\u001b[0m\n`);
-                    process.stdout.write(`${__dirname} (TGIT)\n> `);
-                }
-            });
+            if (cmd.includes('touch TGIT')) {
+                console.log(`\u001b[41mTypeGit Error 1012 :: TGIT 폴더는 접근할 수 없습니다.\u001b[0m\n`);
+                process.stdout.write(`${__dirname} (TGIT)\n> `);
+            } else {
+                let path = `${__dirname}/${cmd.replace('touch ', '')}`;
+                fs.writeFile(path, '', function (error) {
+                    if (fs.readdir('./', function (error, filelist) { filelist.includes(path.replace('touch ', '')) })) {
+                        console.log(`\u001b[41mTypeGit Error 1003 :: 이미 동일한 파일이 존재합니다.\u001b[0m\n`);
+                        process.stdout.write(`${__dirname} (TGIT)\n> `);
+                    } else {
+                        console.log(`\u001b[32mTypeGit : 파일을 생성했습니다.\u001b[0m\n`);
+                        process.stdout.write(`${__dirname} (TGIT)\n> `);
+                    }
+                });
+            }
         } else if (cmd.includes('rm -rf ')) {
-            let path = `${__dirname}/${cmd.replace('rm -rf ', '')}`;
-            fs.unlink(path, (error) => {
-                if (error) {
-                    console.log(`\u001b[41mTypeGit Error 1004 :: 해당 파일을 찾을 수 없습니다.\u001b[0m\n`);
-                    process.stdout.write(`${__dirname} (TGIT)\n> `);
-                } else {
-                    console.log(`\u001b[32mTypeGit : 파일을 삭제했습니다.\u001b[0m\n`);
-                    process.stdout.write(`${__dirname} (TGIT)\n> `);
-                }
-            })
+            if (cmd.includes('rm -rf TGIT')) {
+                console.log(`\u001b[41mTypeGit Error 1013 :: TGIT 폴더 내로 접근할 수 없습니다.\u001b[0m\n`);
+                process.stdout.write(`${__dirname} (TGIT)\n> `);
+            } else if (cmd.includes('rm -rf tgit.log')) {
+                console.log(`\u001b[41mTypeGit Error 1014 :: tgit.log 파일은 삭제할 수 없습니다.\u001b[0m\n`);
+                process.stdout.write(`${__dirname} (TGIT)\n> `);
+            } else {
+                let path = `${__dirname}/${cmd.replace('rm -rf ', '')}`;
+                fs.unlink(path, (error) => {
+                    if (error) {
+                        console.log(`\u001b[41mTypeGit Error 1004 :: 해당 파일을 찾을 수 없습니다.\u001b[0m\n`);
+                        process.stdout.write(`${__dirname} (TGIT)\n> `);
+                    } else {
+                        console.log(`\u001b[32mTypeGit : 파일을 삭제했습니다.\u001b[0m\n`);
+                        process.stdout.write(`${__dirname} (TGIT)\n> `);
+                    }
+                })
+            }
         } else if (cmd.includes('cat ')) {
             let path = `${__dirname}/${cmd.replace('cat ', '')}`;
             fs.readFile(path, 'utf8', (error, data) => {
@@ -162,42 +185,55 @@ rl.on("line", function <T>(line: T) {
                 }
             });
         } else if (cmd.includes('tgit write ')) {
-            let path = `${__dirname}/${cmd.replace('tgit write ', '')}`;
-            let content: String = "";
-            console.log(`\u001b[32mTypeGit : 내용을 입력하세요 :\u001b[0m`);
+            if (cmd.includes('tgit write TGIT')) {
+                console.log(`\u001b[41mTypeGit Error 1013 :: TGIT 폴더 내로 접근할 수 없습니다.\u001b[0m\n`);
+                process.stdout.write(`${__dirname} (TGIT)\n> `);
+            } else if (cmd.includes('tgit write tgit.log')) {
+                console.log(`\u001b[41mTypeGit Error 1015 :: tgit.log의 내용을 변경할 수 없습니다.\u001b[0m\n`);
+                process.stdout.write(`${__dirname} (TGIT)\n> `);
+            } else {
+                let path = `${__dirname}/${cmd.replace('tgit write ', '')}`;
+                let content: String = "";
+                console.log(`\u001b[32mTypeGit : 내용을 입력하세요 :\u001b[0m`);
 
-            rl.question("", (line) => {
-                content = String(line);
-                console.log(`\u001b[32mTypeGit : 성공적으로 입력되었습니다.\u001b[0m`);
-                fs.writeFile(path, content, 'utf8', function (error) {
-                    if (error) {
-                        console.log(`\u001b[41mTypeGit System Error :: ${error}.\u001b[0m\n`);
-                        process.stdout.write(`${__dirname} (TGIT)\n> `);
-                    } else {
-                        console.log(`\u001b[32mTypeGit : 성공적으로 파일에 저장되었습니다.\u001b[0m\n`);
-                        process.stdout.write(`${__dirname} (TGIT)\n> `);
-                    }
-                });
-            });
-        } else if (cmd.includes('tgit rename')) {
-            let folder, newFolder;
-            rl.question("폴더명 : ", (line) => {
-                folder = `${__dirname}/${String(line)}`;
-
-                rl.question("변경할 폴더명 : ", (line) => {
-                    newFolder = `${__dirname}/${String(line)}`;
-
-                    fs.rename(folder, newFolder, function (error) {
+                rl.question("", (line) => {
+                    content = String(line);
+                    console.log(`\u001b[32mTypeGit : 성공적으로 입력되었습니다.\u001b[0m`);
+                    fs.writeFile(path, content, 'utf8', function (error) {
                         if (error) {
-                            console.log(`\u001b[41mTypeGit Error 1006 :: 해당 폴더를 불러올 수 없습니다.\u001b[0m\n`);
+                            console.log(`\u001b[41mTypeGit System Error :: ${error}.\u001b[0m\n`);
                             process.stdout.write(`${__dirname} (TGIT)\n> `);
                         } else {
-                            console.log(`\u001b[32mTypeGit : 성공적으로 폴더명을 변경했습니다.\u001b[0m\n`);
+                            console.log(`\u001b[32mTypeGit : 성공적으로 파일에 저장되었습니다.\u001b[0m\n`);
                             process.stdout.write(`${__dirname} (TGIT)\n> `);
                         }
+                    });
+                });
+            }
+        } else if (cmd.includes('tgit rename')) {
+            if (cmd.includes('tgit rename TGIT')) {
+                console.log(`\u001b[41mTypeGit Error 1013 :: TGIT 폴더의 이름은 변경할 수 없습니다.\u001b[0m\n`);
+                process.stdout.write(`${__dirname} (TGIT)\n> `);
+            } else {
+                let folder, newFolder;
+                rl.question("폴더명 : ", (line) => {
+                    folder = `${__dirname}/${String(line)}`;
+
+                    rl.question("변경할 폴더명 : ", (line) => {
+                        newFolder = `${__dirname}/${String(line)}`;
+
+                        fs.rename(folder, newFolder, function (error) {
+                            if (error) {
+                                console.log(`\u001b[41mTypeGit Error 1006 :: 해당 폴더를 불러올 수 없습니다.\u001b[0m\n`);
+                                process.stdout.write(`${__dirname} (TGIT)\n> `);
+                            } else {
+                                console.log(`\u001b[32mTypeGit : 성공적으로 폴더명을 변경했습니다.\u001b[0m\n`);
+                                process.stdout.write(`${__dirname} (TGIT)\n> `);
+                            }
+                        })
                     })
                 })
-            })
+            }
         } else if (cmd.includes('tgit upload ')) {
             let path = `${__dirname}/${cmd.replace('tgit upload ', '')}`;
             let author = '';
